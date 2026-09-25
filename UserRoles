@@ -1,0 +1,760 @@
+Primary Users
+PU.1 Executives / Leadership Team
+Purpose: Portfolio analysis
+
+·       Executive visibility
+
+·       Reporting
+
+Capabilities:
+
+·       View dashboards
+
+·       View reports
+
+·       Search customers/products/licenses
+
+·       View historical information
+
+·       Export reports
+
+ 
+
+PU.2 License Administrator
+Purpose: Primary operational user.
+
+Capabilities:
+
+·       Create license requests
+
+·       Generate licenses
+
+·       Renew licenses
+
+·       Upgrade/downgrade licenses
+
+·       Replace licenses
+
+·       Revoke licenses
+
+·       Manage deployment records
+
+·       Manage expiration notifications
+
+·       View history
+
+PU.3 Product Administrator
+Capabilities:
+
+·       Manage products
+
+·       Manage versions
+
+·       Configure version lifecycle
+
+·       Configure upgrade/downgrade relationships
+
+·       Configure supported license types
+
+PU.4 Sales / Account Manager
+Capabilities:
+
+·       View assigned customers
+
+·       View licenses
+
+·       View deployment records
+
+·       Submit license requests
+
+·       Request renewal
+
+·       Request upgrade/downgrade
+
+They should not generate licenses unless explicitly authorized.
+
+PU.5 Approver
+Capabilities:
+
+·       Review requests
+
+·       Approved
+
+·       Reject
+
+·       Request changes
+
+·       View history
+
+PU.6 System Administrator
+Capabilities:
+
+·       Manage users
+
+·       Manage roles
+
+·       Configure workflows
+
+·       Configure notification rules
+
+·       Configure application settings
+
+·       Manage integrations such as email/SSO
+
+·       View system audit logs
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+
+ 
+
+ 
+
+ 
+
+5. Business Entities Core
+The system should have the following core entities.
+
+Customer
+
+Customer Environment
+Deployment
+Product
+
+Product Version
+License
+
+License Revision
+License Request
+
+Approval
+Notification
+Audit Event
+User
+Role
+
+C.1 Customer Management
+FR- functional requirements
+
+CUST-001: The system shall allow authorized users to create a customer.
+
+FR-CUST-002: The system shall maintain a unique customer identifier.
+
+FR-CUST-003: The system shall allow users to update customer information.
+
+FR-CUST-004: The system shall maintain suggested customer status below.
+
+ 
+
+Statuses
+
+·       Active
+
+·       Inactive
+
+·       Suspended
+
+·       Terminated
+
+ 
+
+Attributes
+
+Customer ID
+
+·       Customer name
+
+·       Customer code
+
+·       CRM/account identifier
+
+·       Account owner
+
+·       Primary contact
+
+·       Contact email
+
+·       Region
+
+·       Industry
+
+·       Status
+
+·       Notes
+
+·       Created date
+
+·       Modified date
+
+C.2 Customer Environment
+Important clarification: The cloud account information is reference data only. LLMS does not connect to the account.
+
+Customers may have multiple environments.
+
+Environment Types:
+
+·       Production
+
+·       QA
+
+·       Development
+
+·       Disaster Recovery
+
+·       Test
+
+ 
+
+The system shall maintain each environment independently.
+
+Attributes
+
+·       Environment ID
+
+·       Customer ID
+
+·       Environment name
+
+·       Environment type
+
+·       Cloud provider
+
+·       Cloud region
+
+·       Cloud account/subscription/project identifier
+
+·       Environment status
+
+·       Description
+
+·       Created date
+
+·       Modified date
+
+C.3 Deployment Record
+Deployment is a key business entity. A deployment record represents: “This customer has this product/version deployed in this environment.” It does not represent a live connection.
+
+Attributes
+
+·       Deployment ID
+
+·       Customer
+
+·       Environment
+
+·       Product
+
+·       Product version
+
+·       Deployment reference
+
+·       Deployment status
+
+·       Deployment date
+
+·       Decommission date
+
+·       Current license
+
+·       Notes
+
+·       Last updated by
+
+·       Last updated date
+
+Deployment statuses
+
+·       Planned
+
+·       Active
+
+·       Upgrading
+
+·       Downgrading
+
+·       Suspended
+
+·       Decommissioned
+
+ 
+
+C.4 Product Management
+Authorized product administrators shall be able to create and manage products.
+
+Product attributes
+
+·       Product ID
+
+·       Product name
+
+·       Product code
+
+·       Product family
+
+·       Description
+
+·       Product owner
+
+·       Status
+
+Product statues
+
+·       Planned
+
+·       Active
+
+·       Deprecated
+
+·       Retired
+
+ 
+
+C.5 Product Version Management
+Each product should support multiple versions.
+
+Version attributes
+
+·       Version ID
+
+·       Product ID
+
+·       Version number
+
+·       Release date
+
+·       End-of-support date
+
+·       End-of-life date
+
+·       Status
+
+·       Description
+
+·       Release notes reference
+
+Version statuses
+
+·       Planned
+
+·       Current
+
+·       Supported
+
+·       Deprecated
+
+·       End of Support
+
+·       Retired
+
+ 
+
+5.6. Version Transition Rules
+The system shall maintain configurable upgrade and downgrade relationships.
+
+Example: Product A
+
+Upgrade
+
+5.2 → 5.1       Downgrade Allowed
+5.1 → 5.0       Downgrade Allowed
+
+5.2 → 4.5       Downgrade Not Allowed
+
+Downgrade
+
+5.2 → 5.1       Downgrade Allowed
+5.1 → 5.0       Downgrade Allowed
+
+5.2 → 4.5       Downgrade Not Allowed
+
+Note: These rules are application/business rules only. The system does not verify the actual product deployment.
+
+6. License Entities
+L.1 License
+A license represents an authorization issued by the organization.
+
+License attributes
+
+·       License ID
+
+·       License number
+
+·       Customer ID
+
+·       Environment ID
+
+·       Deployment ID
+
+·       Product ID
+
+·       Product version ID
+
+·       License type
+
+·       License edition
+
+·       Entitlement
+
+·       Quantity
+
+·       Unit
+
+·       Start date
+
+·       Expiration date
+
+·       Status
+
+·       Generated date
+
+·       Issued by
+
+·       Approved by
+
+·       Previous license ID
+
+·       Replacement license ID
+
+·       Notes
+
+L.2 License Types
+License types should be configurable. The system should not hard-code license types.
+
+Examples:
+
+·       Subscription
+
+·       Perpetual
+
+·       Trial / Evaluation
+
+·       Development
+
+·       Non-production
+
+·       Production
+
+·       Enterprise
+
+L.3 License Lifecycle
+A license can transition through different paths based on business rules. The standard lifecycle shall be:
+
+Draft
+  ↓
+Pending Approval
+  ↓
+Approved
+  ↓
+Generated
+  ↓
+Active
+  │
+  ├── Renewed
+  │
+  ├── Upgraded
+  │
+  ├── Downgraded
+  │
+  ├── Suspended
+  │
+  ├── Revoked
+  │
+  └── Expired
+
+ 
+
+ 
+
+7. License Workflows
+LW.1 New License
+User story: As a License Administrator, I want to create a license for a new customer deployment so that the customer can receive the appropriate license artifact.
+
+Workflow
+
+Select Customer
+      ↓
+Select Environment
+      ↓
+Select Product
+      ↓
+Select Version
+      ↓
+Select License Type
+      ↓
+Enter Entitlement
+      ↓
+Enter License Term
+      ↓
+Submit Request
+      ↓
+Validation
+      ↓
+Approval
+      ↓
+License Generation
+      ↓
+License Issued
+
+Requirements
+
+FR-LIC-001: The system shall allow an authorized user to initiate a new license request.
+
+FR-LIC-002: The request shall identify the customer.
+
+FR-LIC-003: The request shall identify the customer environment.
+
+FR-LIC-004: The request shall identify the product and version.
+
+FR-LIC-005: The request shall specify the license type.
+
+FR-LIC-006 The request shall specify license entitlement.
+
+FR-LIC-007: The request shall specify start and expiration dates.
+
+FR-LIC-008: The system shall validate required fields.
+
+FR-LIC-009: The system shall route the request through configured approval rules.
+
+FR-LIC-010: After approval, the system shall generate the license.
+
+ 
+
+LW.2 License Generation Formats
+The system shall generate a license artifact based on approved license information.
+
+·       Possible formats include JSON / XML /
+
+·       Signed token / Product-specific license file
+
+The format should be configurable per product.
+
+LW.3 License generation requirements
+
+·       FR-GEN-001: Every generated license shall have a unique license identifier.
+
+·       FR-GEN-002: The generated license shall contain the required entitlement and validity information.
+
+·       FR-GEN-003: The generated license should be digitally signed when required by the organization’s licensing model.
+
+·       FR-GEN-004: Private signing keys shall not be stored in the application database.
+
+·       FR-GEN-005: License generation shall be auditable.
+
+Important boundary
+
+·       The license artifact is generated by LLMS, but LLMS does not send or install the license into the customer’s product deployment.
+
+LW.4 License Renewal
+
+A user shall be able to request renewal of an existing license.
+
+The previous license must remain available in history.
+
+Example:
+
+Existing
+
+ 
+
+License 1001
+Jan 1, 2026 → Dec 31, 2026
+
+Renewal
+
+ 
+
+License 1057
+Jan 1, 2027 → Dec 31, 2027
+
+ 
+
+ 
+
+LW.4 License Upgrade
+
+An upgrade changes the recorded product version associated with the deployment/license.
+
+Example:
+
+From:
+
+Deployment
+Product A
+Version 5.1
+License L1001
+
+Upgrade To
+
+Deployment
+Product A
+Version 5.2
+License L1050
+
+ 
+
+Requirements: The system shall:
+
+·       Identify the current deployment.
+
+·       Display the current version.
+
+·       Display allowed target versions.
+
+·       Validate configured transition rules.
+
+·       Create an upgrade request.
+
+·       Obtain required approval.
+
+·       Generate a new license.
+
+·       Update the deployment record.
+
+·       Preserve the previous license.
+
+·       Create a lifecycle event.
+
+Important:
+
+·       The system does not verify whether the customer upgraded the software.
+
+·       The recorded deployment version changes based on an authorized business transaction/update.
+
+LW.5 License Downgrade
+The downgrade workflow shall operate similarly.
+
+The system shall:
+
+·       Identify current version
+
+·       Identify allowed target versions
+
+·       Validate business rules
+
+·       Obtain approval where required
+
+·       Generate the new license
+
+·       Update the deployment record
+
+·       Preserve previous license
+
+·       Record lifecycle event
+
+LW.6. License Replacement
+Replacement shall be supported when:
+
+·       License was generated incorrectly
+
+·       License artifact was lost
+
+·       License needs to be regenerated
+
+·       Security incident requires replacement
+
+·       Other approved business reasons
+
+The old license must remain in history.
+
+LW.7 License Revocation
+Authorized users shall be able to revoke licenses.
+
+Required:
+
+·       Reason
+
+·       Requestor
+
+·       Approver where required
+
+·       Timestamp
+
+Status become: Revoked
+
+The system does not deactivate the actual deployed product.
+
+LW.8 Expiration Management
+The system shall automatically calculate:
+
+Days Until Expiration
+
+Example:
+
+Expiration Date: December 31, 2026
+Current Date: September 16, 2026
+
+Days Remaining: 106
+
+The application shall classify licenses as:
+
+·       Active
+
+·       Expiring Soon
+
+·       Expired
+
+Thresholds shall be configurable.
+
+8. Configurations
+CF.1 Notification
+Notification thresholds should be configurable.
+
+Example: 90 Days / 60 Days / 30 Days
+14 Days / 7 Days / 1 Day / Expired
+
+Notification Types:
+
+·       MVP Email / In-app notifications
+
+·       Potential future channels: Teams / Slack / Webhooks
+
+Notification history: The system shall record:
+
+·       Notification ID
+
+·       License ID
+
+·       Event
+
+·       Recipient
+
+·       Timestamp
+
+·       Delivery status
+
+·       Failure reason
+
+The system shall prevent duplicate notifications for the same configured event unless explicitly retriggered.
+
+CF.2 Approval Workflow
+Approval rules shall be configurable.
+
+Example:
+
+License Request
+       ↓
+Business Approval
+       ↓
+Technical/Product Approval
+       ↓
+License Generation
+
+Not every request necessarily requires every approval.
+
+Approval capabilities
+·       Approved
+
+·       Reject
+
+·       Request changes
+
+·       Delegate approval
+
+Every approval decision shall be recorded.
+
